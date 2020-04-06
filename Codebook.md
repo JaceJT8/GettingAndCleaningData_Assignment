@@ -63,37 +63,20 @@ Replace activity codes with descriptive names
 **Load activity labels dataset into the activity variable**
 Rename columns to correspond to the corresponidng column names in the "selected" dataset
 
-activity <- as.tbl(read.table("activity_labels.txt"))
-activity <- rename(activity, activity = V1, description = V2)
-Merge activity names with selected data to add activity descriptions
-TidyData <- inner_join(activity, selected)
+activity <- activity_labels.txt (descriptive activity labels for each activity code)
+
+Merge activity names with selected data to add activity descriptions, resulting in the TidyData dataset
 
 # Appropriately labels the data set with descriptive variable names using gsub
 
-Rename variables with more descriptive labels
+Rename variables with more descriptive labels by changing abbreviations to full names. 
 
-names(TidyData)<-gsub("Acc", "Accelerometer", names(TidyData))
-names(TidyData)<-gsub("Gyro", "Gyroscope", names(TidyData))
-names(TidyData)<-gsub("BodyBody", "Body", names(TidyData))
-names(TidyData)<-gsub("Mag", "Magnitude", names(TidyData))
-names(TidyData)<-gsub("^t", "Time", names(TidyData))
-names(TidyData)<-gsub("^f", "Frequency", names(TidyData))
-names(TidyData)<-gsub("tBody", "TimeBody", names(TidyData))
-names(TidyData)<-gsub("-mean()", "Mean", names(TidyData), ignore.case = TRUE)
-names(TidyData)<-gsub("-std()", "STD", names(TidyData), ignore.case = TRUE)
-names(TidyData)<-gsub("-freq()", "Frequency", names(TidyData), ignore.case = TRUE)
-names(TidyData)<-gsub("angle", "Angle", names(TidyData))
-names(TidyData)<-gsub("gravity", "Gravity", names(TidyData))
+Details of the testing variables can be found in the features_info.txt file included with the data
 
 # From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-Calculate mean for each activity and each subject
+Calculate mean for each activity and each subject by first grouping the data based on activity, description and subject and then performing the summarise function. 
 
-TidyDataMeans <- TidyData %>%
-        group_by(activity, description, subject) %>%
-        summarise_all(funs(mean))
+Results in the TidyDataMeans variable
 
-str(TidyDataMeans)
-
-write.table(TidyDataMeans, "FinalData.txt", row.name=FALSE)
 
